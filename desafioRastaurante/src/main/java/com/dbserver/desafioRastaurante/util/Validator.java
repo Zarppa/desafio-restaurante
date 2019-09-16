@@ -1,4 +1,4 @@
-package com.dbserver.desafioRastaurante.Util;
+package com.dbserver.desafioRastaurante.util;
 
 import java.util.List;
 
