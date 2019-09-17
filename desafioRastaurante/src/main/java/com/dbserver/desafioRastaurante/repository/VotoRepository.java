@@ -1,4 +1,4 @@
-package repository;
+package com.dbserver.desafioRastaurante.repository;
 
 import java.util.Date;
 
