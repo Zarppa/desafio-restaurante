@@ -1,4 +1,4 @@
-package com.dbserver.desafioRastaurante.entity;
+package com.dbserver.desafioRastaurante.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,8 +26,10 @@ public class Voto implements Serializable {
 	private Restaurante restaurante;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_profissional")
+	@JoinColumn(name = "ID_PROFISSIONAL")
 	private Profissional profissional;
+	
+	
 
 	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
 	private Date dataVoto;

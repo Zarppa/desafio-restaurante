@@ -1,4 +1,4 @@
-package com.dbserver.desafioRastaurante.entity;
+package com.dbserver.desafioRastaurante.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Profissional implements Serializable{
+public class Restaurante implements Serializable {
 	
-	private static final long serialVersionUID = -565076010896599684L;
+	private static final long serialVersionUID = -446511467531619166L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -19,13 +19,13 @@ public class Profissional implements Serializable{
 	
 	private String nome;
 	
-	private String email;
-	
-	public Profissional(Integer id, String nome, String email) {
+	private String logradouro;
+
+	public Restaurante(Integer id, String nome, String logradouro) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.email = email;
+		this.logradouro = logradouro;
 	}
 
 	public Integer getId() {
@@ -44,17 +44,17 @@ public class Profissional implements Serializable{
 		this.nome = nome;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, id, nome);
+		return Objects.hash(id, logradouro, nome);
 	}
 
 	@Override
@@ -65,11 +65,9 @@ public class Profissional implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Profissional other = (Profissional) obj;
-		return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
+		Restaurante other = (Restaurante) obj;
+		return Objects.equals(id, other.id) && Objects.equals(logradouro, other.logradouro)
+				&& Objects.equals(nome, other.nome);
 	}
 	
-	
-	
-
 }
