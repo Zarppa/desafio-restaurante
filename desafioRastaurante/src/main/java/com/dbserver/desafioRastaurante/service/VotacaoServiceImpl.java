@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dbserver.desafioRastaurante.dto.ProfissionalDTO;
 import com.dbserver.desafioRastaurante.dto.VotacaoDTO;
-import com.dbserver.desafioRastaurante.entity.Votacao;
+import com.dbserver.desafioRastaurante.entities.Votacao;
 import com.dbserver.desafioRastaurante.repository.VotacaoRepository;
 import com.dbserver.desafioRastaurante.util.CalendarUtil;
 import com.dbserver.desafioRastaurante.util.Validator;
@@ -47,7 +47,7 @@ public class VotacaoServiceImpl implements VotacaoService {
 	}
 
 	@Override
-	public Votacao apurarVencedor(ProfissionalDTO profissional) {
+	public Votacao apurarVencedor(ProfissionalDTO profissional, VotacaoDTO votacao) {
 		// TODO Auto-generated method stub
 		return null;
 	}

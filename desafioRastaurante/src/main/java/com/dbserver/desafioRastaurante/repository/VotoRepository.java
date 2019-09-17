@@ -8,8 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbserver.desafioRastaurante.entity.Profissional;
-import com.dbserver.desafioRastaurante.entity.Voto;
+import com.dbserver.desafioRastaurante.entities.Profissional;
+import com.dbserver.desafioRastaurante.entities.Voto;
 
 @Repository
 public interface VotoRepository extends JpaRepository<Voto, Integer> {

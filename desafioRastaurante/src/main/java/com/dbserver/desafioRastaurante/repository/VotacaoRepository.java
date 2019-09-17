@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbserver.desafioRastaurante.entity.Votacao;
+import com.dbserver.desafioRastaurante.entities.Votacao;
 
 @Repository
 public interface VotacaoRepository extends JpaRepository<Votacao, Integer> {

@@ -1,11 +1,13 @@
 package com.dbserver.desafioRastaurante.dto;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.dbserver.desafioRastaurante.entity.Restaurante;
-import com.dbserver.desafioRastaurante.entity.Voto;
+import com.dbserver.desafioRastaurante.entities.Restaurante;
+import com.dbserver.desafioRastaurante.entities.Votacao;
+import com.dbserver.desafioRastaurante.entities.Voto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class VotacaoDTO implements Serializable {
@@ -24,6 +26,11 @@ public class VotacaoDTO implements Serializable {
 		this.votos = votos;
 		this.ativa = ativa;
 		this.vencedor = vencedor;
+	}
+	public VotacaoDTO(Integer id, Boolean ativa, Calendar dataVotacao) {
+		this.id = id;
+		this.ativa = ativa;
+		this.dataVotacao = null;
 	}
 	public Integer getId() {
 		return id;
@@ -54,5 +61,9 @@ public class VotacaoDTO implements Serializable {
 	}
 	public void setVencedor(RestauranteDTO vencedor) {
 		this.vencedor = vencedor;
+	}
+	public static VotacaoDTO criar(Votacao votacao) {
+		return new VotacaoDTO(votacao.getId(), votacao.getAtiva(), votacao.getDataVotacao());
+		
 	}
 }
