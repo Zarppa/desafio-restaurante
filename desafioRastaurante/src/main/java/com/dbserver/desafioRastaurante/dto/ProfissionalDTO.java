@@ -2,6 +2,8 @@ package com.dbserver.desafioRastaurante.dto;
 
 import java.io.Serializable;
 
+import com.dbserver.desafioRastaurante.service.validation.ProfissionaIInsert;
+@ProfissionaIInsert	
 public class ProfissionalDTO implements Serializable {
 
 	private static final long serialVersionUID = -3163919888459770772L;
@@ -10,6 +12,9 @@ public class ProfissionalDTO implements Serializable {
 	private String nome;
 	private String email;
 	
+	public ProfissionalDTO() {		
+	}
+
 	public ProfissionalDTO(Integer id, String nome, String email) {
 		this.id = id;
 		this.nome = nome;

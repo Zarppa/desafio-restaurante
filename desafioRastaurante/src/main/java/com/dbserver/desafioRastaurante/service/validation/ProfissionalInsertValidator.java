@@ -8,33 +8,29 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dbserver.desafioRastaurante.dto.VotoDTO;
+import com.dbserver.desafioRastaurante.dto.ProfissionalDTO;
 import com.dbserver.desafioRastaurante.repository.VotoRepository;
 import com.dbserver.desafioRastaurante.resource.exception.FieldMessage;
 import com.dbserver.desafioRastaurante.util.Validator;
 
-public class VotoInsertValidator implements ConstraintValidator<VotoInsert, VotoDTO> {
-
-	@Autowired
-	private VotoRepository votoRepository;
+public class ProfissionalInsertValidator implements ConstraintValidator<ProfissionaIInsert, ProfissionalDTO> {
 
 	@Override
-	public void initialize(VotoInsert ann) {
+	public void initialize(ProfissionaIInsert ann) {
 	}
 
 	@Override
-	public boolean isValid(VotoDTO votoDTO, ConstraintValidatorContext context) {
-
+	public boolean isValid(ProfissionalDTO profissionalDTO, ConstraintValidatorContext context) {		
+		
 		List<FieldMessage> list = new ArrayList<>();
-
-		if (!Validator.has(votoDTO.getRestauranteDTO())) {
-			list.add(new FieldMessage("restaurante", "Não informado"));
+		
+		if(! Validator.has(profissionalDTO.getId())){
+			list.add(new FieldMessage("id", "Não informado"));			
 		}
-
-		if (!Validator.has(votoDTO.getRestauranteDTO())) {
-			list.add(new FieldMessage("profissional", "Não informado"));
+		if(! Validator.has(profissionalDTO.getNome())) {
+			list.add(new FieldMessage("nome", "Não informado"));	
 		}
-
+		
 		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
@@ -42,5 +38,6 @@ public class VotoInsertValidator implements ConstraintValidator<VotoInsert, Voto
 		}
 		return list.isEmpty();
 	}
-
 }
+		
+	

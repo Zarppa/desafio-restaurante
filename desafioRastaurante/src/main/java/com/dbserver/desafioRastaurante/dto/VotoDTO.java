@@ -3,6 +3,9 @@ package com.dbserver.desafioRastaurante.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.dbserver.desafioRastaurante.service.validation.VotoInsert;
+
+@VotoInsert
 public class VotoDTO implements Serializable {
 
 	private static final long serialVersionUID = 816774703122477901L;

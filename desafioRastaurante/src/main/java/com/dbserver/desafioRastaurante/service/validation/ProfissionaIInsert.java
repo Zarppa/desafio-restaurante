@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = VotoInsertValidator.class)
+@Constraint(validatedBy = ProfissionalInsertValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface VotoInsert {
+public @interface ProfissionaIInsert {
 	
 	String message() default "Erro de validação";
 

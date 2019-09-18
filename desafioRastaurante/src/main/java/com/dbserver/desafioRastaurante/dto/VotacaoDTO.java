@@ -27,10 +27,10 @@ public class VotacaoDTO implements Serializable {
 		this.ativa = ativa;
 		this.vencedor = vencedor;
 	}
-	public VotacaoDTO(Integer id, Boolean ativa, Calendar dataVotacao) {
+	public VotacaoDTO(Integer id, Boolean ativa, Date dataVotacao) {
 		this.id = id;
 		this.ativa = ativa;
-		this.dataVotacao = null;
+		this.dataVotacao = dataVotacao;
 	}
 	public Integer getId() {
 		return id;
