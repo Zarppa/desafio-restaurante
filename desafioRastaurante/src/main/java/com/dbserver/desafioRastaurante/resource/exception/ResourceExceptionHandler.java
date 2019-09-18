@@ -1,8 +1,6 @@
 package com.dbserver.desafioRastaurante.resource.exception;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.dbserver.desafioRastaurante.service.exceptions.ActionDeniedException;
+import com.dbserver.desafioRastaurante.service.exceptions.ObjectNotFoundException;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 	

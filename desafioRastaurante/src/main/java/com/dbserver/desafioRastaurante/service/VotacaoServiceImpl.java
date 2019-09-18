@@ -26,6 +26,7 @@ import com.dbserver.desafioRastaurante.repository.VotoRepository;
 import com.dbserver.desafioRastaurante.service.exceptions.ActionDeniedException;
 import com.dbserver.desafioRastaurante.service.exceptions.ObjectNotFoundException;
 import com.dbserver.desafioRastaurante.util.CalendarUtil;
+import com.dbserver.desafioRastaurante.util.DateUtil;
 import com.dbserver.desafioRastaurante.util.Validator;
 
 @Service
@@ -79,9 +80,9 @@ public class VotacaoServiceImpl implements VotacaoService {
 		Votacao votacaoEncontrada = localizarVotacao(idVotacao);
 		Profissional profissionalEncontrado = localizarProfissional(votoDTO.getProfissionalDTO());	
 		
-		if(!jaVotou(profissionalEncontrado)){			
-			if(validarVotoRestaurante(votoDTO.getRestauranteDTO())){
-				Restaurante restauranteEncontrado = localizarRestaurante(votoDTO.getRestauranteDTO());		
+		if(!jaVotou(profissionalEncontrado)){		
+			Restaurante restauranteEncontrado = localizarRestaurante(votoDTO.getRestauranteDTO());
+			if(validarVotoRestaurante(restauranteEncontrado)){				
 				Voto novoVoto = votoRepository.save(setParametorNovoVoto(profissionalEncontrado, restauranteEncontrado, votoDTO));
 				votacaoEncontrada.getVotos().add(novoVoto);
 				votacaoRepository.save(votacaoEncontrada);
@@ -168,8 +169,7 @@ public class VotacaoServiceImpl implements VotacaoService {
 		return voto;
 	}
 
-	private boolean validarVotoRestaurante(RestauranteDTO restauranteDTO) {		
-		Restaurante restauranteEncontrado = localizarRestaurante(restauranteDTO);		
+	private boolean validarVotoRestaurante(Restaurante restauranteEncontrado) {		
 		List<Votacao> votacoesVencidas = votacaoRepository.findByVencedor(restauranteEncontrado);
 		
 		if(Validator.has(votacoesVencidas)) {
@@ -181,7 +181,10 @@ public class VotacaoServiceImpl implements VotacaoService {
 	}
 	
 	private boolean restauranteVenceuEssaSemana(List<Votacao> votacoesVencidas) {
-		return false;
+		return  votacoesVencidas.stream()
+				.filter(votacao -> (DateUtil.getSemanaDoAno(votacao.getDataVotacao())) == (DateUtil.getSemanaDoAno(new Date())))
+				.findFirst()
+				.isPresent();		    
 	}
 
 	private Restaurante localizarRestaurante(RestauranteDTO restauranteDTO) {
