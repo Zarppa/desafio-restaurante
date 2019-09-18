@@ -2,6 +2,8 @@ package com.dbserver.desafioRastaurante.dto;
 
 import java.io.Serializable;
 
+import com.dbserver.desafioRastaurante.entities.Profissional;
+import com.dbserver.desafioRastaurante.entities.Restaurante;
 import com.dbserver.desafioRastaurante.service.validation.ProfissionaIInsert;
 @ProfissionaIInsert	
 public class ProfissionalDTO implements Serializable {
@@ -45,4 +47,7 @@ public class ProfissionalDTO implements Serializable {
 		this.email = email;
 	}
 
+	public static ProfissionalDTO criar(Profissional profissional) {
+		return new ProfissionalDTO(profissional.getId(), profissional.getNome(), profissional.getEmail());
+	}
 }

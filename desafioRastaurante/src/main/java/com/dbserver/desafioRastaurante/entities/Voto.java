@@ -29,7 +29,7 @@ public class Voto implements Serializable {
 	@JoinColumn(name = "ID_PROFISSIONAL")
 	private Profissional profissional;	
 
-	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataVoto;
 
 	public Voto(Integer id, Restaurante restaurante, Profissional profissional, Date dataVoto) {
@@ -37,6 +37,10 @@ public class Voto implements Serializable {
 		this.restaurante = restaurante;
 		this.profissional = profissional;
 		this.dataVoto = dataVoto;
+	}
+
+	public Voto() {
+	
 	}
 
 	public Integer getId() {

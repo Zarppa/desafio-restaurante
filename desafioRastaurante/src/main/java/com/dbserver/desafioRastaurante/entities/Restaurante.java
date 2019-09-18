@@ -20,6 +20,9 @@ public class Restaurante implements Serializable {
 	private String nome;
 	
 	private String logradouro;
+	
+	public Restaurante() {
+	}
 
 	public Restaurante(Integer id, String nome, String logradouro) {
 		super();

@@ -30,17 +30,20 @@ public class Votacao {
 	)
 	private List<Voto> votos;
 	
-	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataVotacao;
 	
 	@JsonIgnore
 	private Boolean ativa;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="id_profissional")
 	private Profissional facilitador;
 	
 	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="id_restaurante")
 	private Restaurante vencedor;
 	
 	public Votacao() {
