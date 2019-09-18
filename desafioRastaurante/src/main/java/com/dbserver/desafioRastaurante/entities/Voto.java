@@ -27,9 +27,7 @@ public class Voto implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_PROFISSIONAL")
-	private Profissional profissional;
-	
-	
+	private Profissional profissional;	
 
 	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
 	private Date dataVoto;

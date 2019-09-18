@@ -9,24 +9,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Profissional implements Serializable{
-	
+public class Profissional implements Serializable {
+
 	private static final long serialVersionUID = -565076010896599684L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String nome;
 	private String email;
-	private Boolean facilitador;
-	
+
+	public Profissional() {
+	}
+
 	public Profissional(Integer id, String nome, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.facilitador = Boolean.FALSE;
 	}
 
 	public Integer getId() {
@@ -52,20 +53,10 @@ public class Profissional implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-
-	public Boolean getFacilitador() {
-		return facilitador;
-	}
-
-	public void setFacilitador(Boolean facilitador) {
-		this.facilitador = facilitador;
-	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, facilitador, id, nome);
+		return Objects.hash(email, id, nome);
 	}
 
 	@Override
@@ -77,7 +68,6 @@ public class Profissional implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Profissional other = (Profissional) obj;
-		return Objects.equals(email, other.email) && Objects.equals(facilitador, other.facilitador)
-				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
+		return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
 }
