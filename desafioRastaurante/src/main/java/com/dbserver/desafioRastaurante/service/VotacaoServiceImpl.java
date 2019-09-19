@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.dbserver.desafioRastaurante.dto.ProfissionalDTO;
 import com.dbserver.desafioRastaurante.dto.RestauranteDTO;
-import com.dbserver.desafioRastaurante.dto.ResultadoVoto;
+import com.dbserver.desafioRastaurante.dto.ResultadoVotoDTO;
 import com.dbserver.desafioRastaurante.dto.VotacaoDTO;
 import com.dbserver.desafioRastaurante.dto.VotoDTO;
 import com.dbserver.desafioRastaurante.entities.Profissional;
@@ -55,7 +55,7 @@ public class VotacaoServiceImpl implements VotacaoService {
 
 		Votacao votacao = votacaoRepository.findByDataVotacao(HOJE);
 
-		if (!Validator.has(votacao)) {
+		if (votacao==null) {
 			Profissional profissionalEncontrado = localizarProfissional(profissionalDTO);
 			return inserir(setParametrosIniciarVotacao(profissionalEncontrado));
 		}
@@ -122,9 +122,9 @@ public class VotacaoServiceImpl implements VotacaoService {
 		Map<Integer, Long> results = votos.stream()
 				.collect(Collectors.groupingBy(Voto::getIdRestauranteVoto, TreeMap::new, Collectors.counting()));
 
-		List<ResultadoVoto> resultadoOrdenado = results.entrySet().stream()
-				.map(e -> new ResultadoVoto(e.getKey(), Math.toIntExact(e.getValue()))).collect(Collectors.toList())
-				.stream().sorted(Comparator.comparing(ResultadoVoto::getQtdVotos).reversed())
+		List<ResultadoVotoDTO> resultadoOrdenado = results.entrySet().stream()
+				.map(e -> new ResultadoVotoDTO(e.getKey(), Math.toIntExact(e.getValue()))).collect(Collectors.toList())
+				.stream().sorted(Comparator.comparing(ResultadoVotoDTO::getQtdVotos).reversed())
 				.collect(Collectors.toList());
 
 		Optional<Restaurante> vencedor = restauranteRepository.findById(resultadoOrdenado.get(0).getIdRestaurante());

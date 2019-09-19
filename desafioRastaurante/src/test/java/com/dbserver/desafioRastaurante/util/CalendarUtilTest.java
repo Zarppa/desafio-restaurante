@@ -1,4 +1,4 @@
-package com.dbserver.desafioRastaurante.Util;
+package com.dbserver.desafioRastaurante.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

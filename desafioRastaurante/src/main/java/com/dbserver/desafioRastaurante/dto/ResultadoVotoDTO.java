@@ -1,14 +1,14 @@
 package com.dbserver.desafioRastaurante.dto;
 
-public class ResultadoVoto implements Comparable<ResultadoVoto>{
+public class ResultadoVotoDTO implements Comparable<ResultadoVotoDTO>{
 
 	private Integer idRestaurante;
 	private Integer qtdVotos;
 
-	public ResultadoVoto() {
+	public ResultadoVotoDTO() {
 	}
 
-	public ResultadoVoto(Integer idRestaurante, Integer qtdVotos) {
+	public ResultadoVotoDTO(Integer idRestaurante, Integer qtdVotos) {
 		super();
 		this.idRestaurante = idRestaurante;
 		this.qtdVotos = qtdVotos;
@@ -31,7 +31,7 @@ public class ResultadoVoto implements Comparable<ResultadoVoto>{
 	}
 
 	@Override
-	public int compareTo(ResultadoVoto arg0) {
+	public int compareTo(ResultadoVotoDTO arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
