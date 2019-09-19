@@ -1,6 +1,7 @@
 package com.dbserver.desafioRastaurante.service;
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.dbserver.desafioRastaurante.dto.ProfissionalDTO;
 import com.dbserver.desafioRastaurante.dto.RestauranteDTO;
+import com.dbserver.desafioRastaurante.dto.ResultadoVoto;
 import com.dbserver.desafioRastaurante.dto.VotacaoDTO;
 import com.dbserver.desafioRastaurante.dto.VotoDTO;
 import com.dbserver.desafioRastaurante.entities.Profissional;
@@ -37,16 +39,16 @@ public class VotacaoServiceImpl implements VotacaoService {
 
 	@Autowired
 	private ProfissionalRepository profissionalRepository;
-	
+
 	@Autowired
 	private VotoRepository votoRepository;
-	
+
 	@Autowired
 	private RestauranteRepository restauranteRepository;
-	
+
 	private static final Date HOJE = CalendarUtil.truncate(Calendar.getInstance()).getTime();
-	
-	private static final Integer SEMANA_ATUAL =  Calendar.WEEK_OF_YEAR;
+
+	private static final Integer SEMANA_ATUAL = Calendar.WEEK_OF_YEAR;
 
 	@Override
 	public Votacao iniciarVotacao(ProfissionalDTO profissionalDTO) {
@@ -73,84 +75,74 @@ public class VotacaoServiceImpl implements VotacaoService {
 		votacao = votacaoRepository.save(votacao);
 		return votacao;
 	}
-	
+
 	@Override
-	public Voto votar(Integer idVotacao, VotoDTO votoDTO) {		
-		
+	public Voto votar(Integer idVotacao, VotoDTO votoDTO) {
+
 		Votacao votacaoEncontrada = localizarVotacao(idVotacao);
-		Profissional profissionalEncontrado = localizarProfissional(votoDTO.getProfissionalDTO());	
-		
-		if(!jaVotou(profissionalEncontrado)){		
+		Profissional profissionalEncontrado = localizarProfissional(votoDTO.getProfissionalDTO());
+
+		if (!jaVotou(profissionalEncontrado)) {
 			Restaurante restauranteEncontrado = localizarRestaurante(votoDTO.getRestauranteDTO());
-			if(validarVotoRestaurante(restauranteEncontrado)){				
-				Voto novoVoto = votoRepository.save(setParametorNovoVoto(profissionalEncontrado, restauranteEncontrado, votoDTO));
+			if (validarVotoRestaurante(restauranteEncontrado)) {
+				Voto novoVoto = votoRepository
+						.save(setParametorNovoVoto(profissionalEncontrado, restauranteEncontrado, votoDTO));
 				votacaoEncontrada.getVotos().add(novoVoto);
 				votacaoRepository.save(votacaoEncontrada);
 				return novoVoto;
-			}throw new ActionDeniedException("Esse restaurante ja foi escolhido essa semana");		
-		}throw new ActionDeniedException("Profissional já votou hoje");		
+			}
+			throw new ActionDeniedException("Esse restaurante ja foi escolhido essa semana");
+		}
+		throw new ActionDeniedException("Profissional já votou hoje");
 	}
 
 	@Override
-	public Votacao apurarVencedor(ProfissionalDTO profissionalDTO, VotacaoDTO votacaoDTO) {
+	public Restaurante apurarVencedor(ProfissionalDTO profissionalDTO, Integer idVotacao) {
 
-		Votacao votacaoEncontrada = localizarVotacao(votacaoDTO);
-			if (votacaoEncontrada.getAtiva()) {				
-				Profissional profissionalEncontrado = localizarProfissional(profissionalDTO);				
-					if (profissionalEncontrado.equals(votacaoEncontrada.getFacilitador())) {
-						Restaurante vencedor = apurarVotos(votacaoEncontrada);
-						votacaoEncontrada.setVencedor(vencedor);
-						return votacaoRepository.save(votacaoEncontrada);
-					}throw new ActionDeniedException(
-							"Profissional não é o facilitador. Apenas o faclitador pode apurar o Resultado.");			
-			}throw new ActionDeniedException("Votação não esta ativa.");
+		Votacao votacaoEncontrada = localizarVotacao(idVotacao);
+		if (votacaoEncontrada.getAtiva()) {
+			Profissional profissionalEncontrado = localizarProfissional(profissionalDTO);
+			if (profissionalEncontrado.equals(votacaoEncontrada.getFacilitador())) {
+				Restaurante vencedor = apurarVotos(votacaoEncontrada);
+				votacaoEncontrada.setVencedor(vencedor);
+				votacaoEncontrada.setAtiva(Boolean.FALSE);
+				votacaoRepository.save(votacaoEncontrada);
+				return votacaoEncontrada.getVencedor();
+			}
+			throw new ActionDeniedException(
+					"Profissional não é o facilitador. Apenas o faclitador pode apurar o Resultado.");
+		}
+		throw new ActionDeniedException("Votação não esta ativa.");
 	}
-
-	
 
 	private Restaurante apurarVotos(Votacao votacao) {
 
 		List<Voto> votos = votacao.getVotos();
 
-		Map<Restaurante, Long> results = votos.stream()
-				.collect(Collectors.groupingBy(Voto::getRestaurante, TreeMap::new, Collectors.counting()));
+		Map<Integer, Long> results = votos.stream()
+				.collect(Collectors.groupingBy(Voto::getIdRestauranteVoto, TreeMap::new, Collectors.counting()));
 
-		// Results are sorted, but by the key of the TreeMap: the Candidate name.
-		results.entrySet().stream().forEach(e -> System.out.printf("%30s: %d%n", e.getKey(), e.getValue()));
+		List<ResultadoVoto> resultadoOrdenado = results.entrySet().stream()
+				.map(e -> new ResultadoVoto(e.getKey(), Math.toIntExact(e.getValue()))).collect(Collectors.toList())
+				.stream().sorted(Comparator.comparing(ResultadoVoto::getQtdVotos).reversed())
+				.collect(Collectors.toList());
 
-		/*
-		 * List<VoteResult> results = results1.entrySet().stream() .map(e -> new
-		 * VoteResult(e.getKey(), Math.toIntExact(e.getValue())))
-		 * .collect(Collectors.toList()); // Results are sorted by VoteResult, which
-		 * uses the vote count. Collections.sort(results); results.forEach(vr ->
-		 * System.out.printf("%30s: %d%n", vr.getCandidate(), vr.getVoteCount()))
-		 */
+		Optional<Restaurante> vencedor = restauranteRepository.findById(resultadoOrdenado.get(0).getIdRestaurante());
 
-		return null;
+		return vencedor.get();
 	}
-	
+
 	private Profissional localizarProfissional(ProfissionalDTO profissionalDTO) {
 		Optional<Profissional> profissional = profissionalRepository.findById(profissionalDTO.getId());
-		
+
 		if (profissional.isPresent()) {
 			return profissional.get();
 		}
 		throw new ObjectNotFoundException("Profissional não encontrado.");
 	}
-		
-	
-	private Votacao localizarVotacao(VotacaoDTO votacaoDTO) {
-		
-		Optional<Votacao> votacao = votacaoRepository.findById(votacaoDTO.getId());
 
-		if (votacao.isPresent()) {
-			return votacao.get();
-		}
-		throw new ObjectNotFoundException("Votacão não encontrada.");
-	}
-	
 	private Votacao localizarVotacao(Integer idVotacao) {
-		
+
 		Optional<Votacao> votacao = votacaoRepository.findById(idVotacao);
 
 		if (votacao.isPresent()) {
@@ -158,8 +150,7 @@ public class VotacaoServiceImpl implements VotacaoService {
 		}
 		throw new ObjectNotFoundException("Votacão não encontrada.");
 	}
-	
-	
+
 	private Voto setParametorNovoVoto(Profissional profissional, Restaurante restauranteVotado, VotoDTO votoDTO) {
 		Voto voto = new Voto();
 		voto.setId(null);
@@ -169,33 +160,31 @@ public class VotacaoServiceImpl implements VotacaoService {
 		return voto;
 	}
 
-	private boolean validarVotoRestaurante(Restaurante restauranteEncontrado) {		
+	private boolean validarVotoRestaurante(Restaurante restauranteEncontrado) {
 		List<Votacao> votacoesVencidas = votacaoRepository.findByVencedor(restauranteEncontrado);
-		
-		if(Validator.has(votacoesVencidas)) {
-			if(restauranteVenceuEssaSemana(votacoesVencidas)) {
+
+		if (Validator.has(votacoesVencidas)) {
+			if (restauranteVenceuEssaSemana(votacoesVencidas)) {
 				return false;
 			}
-		}		
+		}
 		return true;
 	}
-	
+
 	private boolean restauranteVenceuEssaSemana(List<Votacao> votacoesVencidas) {
-		return  votacoesVencidas.stream()
-				.filter(votacao -> (DateUtil.getSemanaDoAno(votacao.getDataVotacao())) == (DateUtil.getSemanaDoAno(new Date())))
-				.findFirst()
-				.isPresent();		    
+		return votacoesVencidas.stream().filter(
+				votacao -> (DateUtil.getSemanaDoAno(votacao.getDataVotacao())) == (DateUtil.getSemanaDoAno(new Date())))
+				.findFirst().isPresent();
 	}
 
 	private Restaurante localizarRestaurante(RestauranteDTO restauranteDTO) {
-		Optional<Restaurante> restaurante =  restauranteRepository.findById(restauranteDTO.getId());
-		
+		Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteDTO.getId());
+
 		if (restaurante.isPresent()) {
 			return restaurante.get();
 		}
 		throw new ObjectNotFoundException("Votacão não encontrada.");
-	}		
-	
+	}
 
 	private boolean jaVotou(Profissional profissionalEncontrado) {
 		return Validator.has(votoRepository.buscarVotoPorProfissionaleData(profissionalEncontrado, HOJE));

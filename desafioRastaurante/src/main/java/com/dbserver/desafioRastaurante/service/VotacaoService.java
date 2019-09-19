@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.dbserver.desafioRastaurante.dto.ProfissionalDTO;
 import com.dbserver.desafioRastaurante.dto.VotacaoDTO;
 import com.dbserver.desafioRastaurante.dto.VotoDTO;
+import com.dbserver.desafioRastaurante.entities.Restaurante;
 import com.dbserver.desafioRastaurante.entities.Votacao;
 import com.dbserver.desafioRastaurante.entities.Voto;
 
@@ -12,7 +13,7 @@ import com.dbserver.desafioRastaurante.entities.Voto;
 public interface VotacaoService {
 	
 	Votacao iniciarVotacao(ProfissionalDTO profissionalDTO);	
-	Votacao apurarVencedor(ProfissionalDTO profissional, VotacaoDTO votacao);
+	Restaurante apurarVencedor(ProfissionalDTO profissional, Integer Idvotacao);
 	Voto votar(Integer idVotacao, VotoDTO voto);
 
 }

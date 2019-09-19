@@ -74,6 +74,11 @@ public class Voto implements Serializable {
 	public void setDataVoto(Date dataVoto) {
 		this.dataVoto = dataVoto;
 	}
+	
+	public Integer getIdRestauranteVoto(){
+		return this.restaurante.getId();
+	}
+	
 
 	@Override
 	public int hashCode() {

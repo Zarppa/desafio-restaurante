@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbserver.desafioRastaurante.dto.ProfissionalDTO;
+import com.dbserver.desafioRastaurante.dto.RestauranteDTO;
 import com.dbserver.desafioRastaurante.dto.VotacaoDTO;
 import com.dbserver.desafioRastaurante.dto.VotoDTO;
+import com.dbserver.desafioRastaurante.entities.Restaurante;
 import com.dbserver.desafioRastaurante.entities.Votacao;
 import com.dbserver.desafioRastaurante.entities.Voto;
 import com.dbserver.desafioRastaurante.service.VotacaoService;
@@ -34,6 +36,12 @@ public class VotacaoResourse {
 	public ResponseEntity<VotoDTO> votar(@Valid @RequestBody VotoDTO votoDTO, @PathVariable Integer idVotacao) {
 		Voto voto = service.votar(idVotacao, votoDTO);		
 		return ResponseEntity.ok().body(VotoDTO.criar(voto));
+		
+	}
+	@RequestMapping(value="/{idVotacao}/apurarVencedor", method=RequestMethod.POST)	
+	public ResponseEntity<RestauranteDTO> apurarVotacao(@Valid @RequestBody ProfissionalDTO profissional, @PathVariable Integer idVotacao) {
+		Restaurante vencedor = service.apurarVencedor(profissional, idVotacao);		
+		return ResponseEntity.ok().body(RestauranteDTO.criar(vencedor));
 		
 	}
 
