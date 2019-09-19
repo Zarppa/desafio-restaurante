@@ -21,6 +21,8 @@ public class RestauranteDTO implements Serializable {
 		this.logradouro = logradouro;
 	}
 	
+	
+	
 	public Integer getId() {
 		return id;
 	}
