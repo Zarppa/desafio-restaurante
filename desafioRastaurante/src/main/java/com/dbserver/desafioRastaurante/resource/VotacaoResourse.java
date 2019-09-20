@@ -19,6 +19,8 @@ import com.dbserver.desafioRastaurante.entities.Votacao;
 import com.dbserver.desafioRastaurante.entities.Voto;
 import com.dbserver.desafioRastaurante.service.VotacaoService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value="/votacao")
 public class VotacaoResourse {
@@ -27,17 +29,20 @@ public class VotacaoResourse {
 	@Autowired
 	private VotacaoService service;
 	
+	@ApiOperation(value="Inicia uma votação para o almoço")
 	@RequestMapping(value="/iniciar", method=RequestMethod.POST)
 	public ResponseEntity<VotacaoDTO> iniciarVotacao(@Valid @RequestBody ProfissionalDTO profissionalDTO) {
 		Votacao votacao = service.iniciarVotacao(profissionalDTO);		
 		return ResponseEntity.ok().body(VotacaoDTO.criar(votacao));
 	}
+	@ApiOperation(value="Vota no restaurante desejado")
 	@RequestMapping(value="/{idVotacao}/votar", method=RequestMethod.POST)	
 	public ResponseEntity<VotoDTO> votar(@Valid @RequestBody VotoDTO votoDTO, @PathVariable Integer idVotacao) {
 		Voto voto = service.votar(idVotacao, votoDTO);		
 		return ResponseEntity.ok().body(VotoDTO.criar(voto));
 		
 	}
+	@ApiOperation(value="Apura restaurante vencedor")
 	@RequestMapping(value="/{idVotacao}/apurarVencedor", method=RequestMethod.POST)	
 	public ResponseEntity<RestauranteDTO> apurarVotacao(@Valid @RequestBody ProfissionalDTO profissional, @PathVariable Integer idVotacao) {
 		Restaurante vencedor = service.apurarVencedor(profissional, idVotacao);		
