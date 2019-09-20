@@ -27,9 +27,6 @@ public class ProfissionalInsertValidator implements ConstraintValidator<Profissi
 		if(! Validator.has(profissionalDTO.getId())){
 			list.add(new FieldMessage("id", "Não informado"));			
 		}
-		if(! Validator.has(profissionalDTO.getNome())) {
-			list.add(new FieldMessage("nome", "Não informado"));	
-		}
 		
 		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
