@@ -33,7 +33,7 @@ import com.dbserver.desafioRastaurante.service.exceptions.ActionDeniedException;
 import com.dbserver.desafioRastaurante.util.CalendarUtil;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 public class VotacaoServiceTest {
 
