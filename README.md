@@ -29,6 +29,12 @@ Critério de Aceitação:
 
 Para elaboração do projeto foi usado Java 8 com Spring Boot e Spring Data, o banco de dados utilizado foi o MySQL junto com o XAMPP.
 
+https://www.apachefriends.org/pt_br/index.html
+
+
+*IMPORTANTE* Adicionar a pasta do mysql nas variaveis de ambiente: C:\xampp\mysql\bin
+
+
 Para facilitar o uso da API, foi criado um serviço que é chamado automaticamente para criar o banco de dados e popular a lista de restaurantes e funcionarios.
 
 
