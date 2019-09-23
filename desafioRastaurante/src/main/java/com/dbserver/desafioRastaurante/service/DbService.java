@@ -1,6 +1,11 @@
 package com.dbserver.desafioRastaurante.service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Arrays;
+
+import javax.swing.JOptionPane;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +14,7 @@ import com.dbserver.desafioRastaurante.entities.Profissional;
 import com.dbserver.desafioRastaurante.entities.Restaurante;
 import com.dbserver.desafioRastaurante.repository.ProfissionalRepository;
 import com.dbserver.desafioRastaurante.repository.RestauranteRepository;
+
 
 @Service
 public class DbService {
@@ -21,8 +27,14 @@ public class DbService {
 	
 	public void instantiateTestDatabase() {
 		
+		criaBD();
 		populaDadosRestaurantes();
 		
+		populaProfissionais();
+		
+	}
+
+	private void populaProfissionais() {
 		Profissional p1 = new Profissional(null,"Guilherme Palma", "guilherme.palma@dbserver.com.br");
 		Profissional p2 = new Profissional(null,"João da Silva", "joao.silva@dbserver.com.br");
 		Profissional p3 = new Profissional(null,"Fernanda Martins", "fernanda.martins@dbserver.com.br");
@@ -32,7 +44,6 @@ public class DbService {
 		Profissional p7 = new Profissional(null,"Eduardo Santos", "eduardo.santos@dbserver.com.br");
 		
 		profissionalRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7));
-		
 	}
 
 	private void populaDadosRestaurantes() {
@@ -43,6 +54,27 @@ public class DbService {
 		Restaurante r5 = new Restaurante(null, "Silva Lanches", "Vila Joao Pessoa, Porto Alegre");
 		
 		restauranteRepository.saveAll(Arrays.asList(r1,r2,r3,r4,r5));
+	}
+	
+	public void criaBD() {
+		try {
+	        String databaseName = "votacao_restaurante";
+	        String userName = "root";
+	        String password = "";
+
+	        String url = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=convertToNull";
+	        
+	        Connection connection = DriverManager.getConnection(url,userName, password);
+	        String sql = "CREATE DATABASE IF NOT EXISTS " + databaseName;        
+	     
+	        Statement statement = connection.createStatement();
+	        statement.executeUpdate(sql);
+	        statement.close();	        
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	}
+		
 	}
 
 }
